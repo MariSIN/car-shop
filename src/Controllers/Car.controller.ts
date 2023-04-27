@@ -33,4 +33,29 @@ export default class CarController {
       return this.res.status(statusCode.badRequest).json('invalids fields');
     }
   }
+
+  public async getAll() {
+    const cars = await this.service.getAllCars();      
+    try {
+      return this.res.status(statusCode.ok).json(cars);
+    } catch (error) {
+      return this.res.status(500).json({ message: error });
+    }
+  }
+
+  public async getById() {
+    const { id } = this.req.params;
+    try {
+      const car = await this.service.getCarById(id);
+      return this.res.status(statusCode.ok).json(car);
+    } catch (error: any | unknown) {
+      if (error.statusCode === 404) {
+        this.res.status(statusCode.notFound).json({ message: error.message });
+      } else if (error.statusCode === 422) {
+        this.res.status(statusCode.unprocessableEntity).json({ message: error.message });
+      } else {
+        this.res.status(500).json({ message: 'Internal server error' });
+      }
+    }
+  }
 }
