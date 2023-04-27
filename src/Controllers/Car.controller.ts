@@ -48,7 +48,8 @@ export default class CarController {
     try {
       const car = await this.service.getCarById(id);
       return this.res.status(statusCode.ok).json(car);
-    } catch (error: any | unknown) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       if (error.statusCode === 404) {
         this.res.status(statusCode.notFound).json({ message: error.message });
       } else if (error.statusCode === 422) {
