@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import CustomError from '../Interfaces/CustomError';
 import ICar from '../Interfaces/ICar';
 import CarService from '../Services/Car.service';
 import statusCode from '../helpers/statusCode';
@@ -48,12 +49,30 @@ export default class CarController {
     try {
       const car = await this.service.getCarById(id);
       return this.res.status(statusCode.ok).json(car);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      if (error.statusCode === 404) {
-        this.res.status(statusCode.notFound).json({ message: error.message });
-      } else if (error.statusCode === 422) {
-        this.res.status(statusCode.unprocessableEntity).json({ message: error.message });
+    } catch (error: unknown) {
+      if ((error as CustomError).statusCode === 404) {
+        this.res.status(statusCode.notFound).json({ message: (error as CustomError).message });
+      } else if ((error as CustomError).statusCode === 422) {
+        this.res.status(statusCode.unprocessableEntity).json({ message: (error as CustomError)
+          .message });
+      } else {
+        this.res.status(500).json({ message: 'Internal server error' });
+      }
+    }
+  }
+
+  public async update() {
+    const { id } = this.req.params;
+
+    try {
+      const car = await this.service.updateCar(id, this.req.body);
+      this.res.status(statusCode.ok).json(car);
+    } catch (error: unknown) {
+      if ((error as CustomError).statusCode === 404) {
+        this.res.status(statusCode.notFound).json({ message: (error as CustomError).message });
+      } else if ((error as CustomError).statusCode === 422) {
+        this.res.status(statusCode.unprocessableEntity).json({ message: (error as CustomError)
+          .message });
       } else {
         this.res.status(500).json({ message: 'Internal server error' });
       }
