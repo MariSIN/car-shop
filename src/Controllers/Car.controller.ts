@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import CustomError from '../Interfaces/CustomError';
-import ICar from '../Interfaces/ICar';
 import CarService from '../Services/Car.service';
 import statusCode from '../helpers/statusCode';
 
@@ -18,17 +17,8 @@ export default class CarController {
   }
 
   public async create() {
-    const car: ICar = {
-      model: this.req.body.model,
-      year: this.req.body.year,
-      color: this.req.body.color,
-      status: this.req.body.status,
-      buyValue: this.req.body.buyValue,
-      doorsQty: this.req.body.doorsQty,
-      seatsQty: this.req.body.seatsQty,
-    };
     try {
-      const newCar = await this.service.addCar(car);
+      const newCar = await this.service.addCar(this.req.body);
       return this.res.status(statusCode.created).json(newCar);
     } catch (error) {
       return this.res.status(statusCode.badRequest).json('invalids fields');
