@@ -4,8 +4,9 @@ import sinon from 'sinon';
 import Car from '../../../src/Domains/Car';
 import CarService from '../../../src/Services/Car.service';
 import {
-  carInput,
-  carList, carOutput,
+  carInput, carInputUpdate, carList, carOutput,
+  carOutputUpdate,
+  idParams,
 } from './mocks/mockCar';
 
 describe('CarService', function () {
@@ -99,7 +100,8 @@ describe('CarService', function () {
           },
         );
 
-        /* it('estiver correto deve retornar o cadastro atualizado', async function () {
+        it('estiver correto deve retornar o cadastro atualizado', async function () {
+          sinon.stub(Model, 'findById').resolves(carOutput);
           sinon.stub(Model, 'findOneAndUpdate')
             .resolves(carOutputUpdate);
         
@@ -107,7 +109,7 @@ describe('CarService', function () {
           const result = await service.updateCar(idParams, carInputUpdate);
         
           expect(result).to.be.deep.equal(carOutputUpdate);
-        }); */
+        });
       });
     });
   });
