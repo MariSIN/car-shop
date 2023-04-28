@@ -58,3 +58,26 @@ export const carList : ICar[] = [
     seatsQty: 3,
   },
 ];
+
+export const carInputUpdate: ICar = {
+  model: 'Marea',
+  year: 2002,
+  color: 'red',
+  status: true,
+  buyValue: 15.500,
+  doorsQty: 4,
+  seatsQty: 5,
+};
+
+export const idParams = '64499232f75a1d20be2cd47d';
+
+export const carOutputUpdate = new Car({
+  id: '64499232f75a1d20be2cd47d',
+  model: 'Marea',
+  year: 2002,
+  color: 'red',
+  status: true,
+  buyValue: 15.500,
+  doorsQty: 4,
+  seatsQty: 5,
+});
