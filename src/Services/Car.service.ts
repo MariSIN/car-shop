@@ -20,7 +20,7 @@ export default class CarService {
 
   public async getAllCars(): Promise<(Car | null)[]> {
     const carODM = new CarODM();
-    const cars = await carODM.getAllCars();
+    const cars = await carODM.getAll();
     return cars.map(this.createCarDomain); 
   }
 
@@ -30,7 +30,7 @@ export default class CarService {
     }
 
     const carODM = new CarODM();
-    const car = await carODM.getCarById(id);
+    const car = await carODM.getById(id);
 
     if (!car) {
       throw new ErrorHandler(404, 'Car not found');

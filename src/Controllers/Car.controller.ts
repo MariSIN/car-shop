@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import CustomError from '../Interfaces/CustomError';
+import IErrorResponse from '../Interfaces/IErrorResponse';
+import ISuccessResponse from '../Interfaces/ISucessResponseCar';
 import CarService from '../Services/Car.service';
 import statusCode from '../helpers/statusCode';
 
@@ -16,55 +18,64 @@ export default class CarController {
     this.service = new CarService();
   }
 
+  public errorResponse: IErrorResponse = (stt, message) => this.res.status(stt).json({ message });
+
+  public sucssesResponse: ISuccessResponse = (stt, obj) => this.res.status(stt).json(obj);
+
   public async create() {
     try {
       const newCar = await this.service.addCar(this.req.body);
-      return this.res.status(statusCode.created).json(newCar);
+      this.sucssesResponse(statusCode.created, newCar);
     } catch (error) {
-      return this.res.status(statusCode.badRequest).json('invalids fields');
+      const err = (error as CustomError);
+      this.errorResponse(err.statusCode, err.message);
     }
   }
 
   public async getAll() {
-    const cars = await this.service.getAllCars();      
     try {
-      return this.res.status(statusCode.ok).json(cars);
+      const cars = await this.service.getAllCars();      
+      this.sucssesResponse(statusCode.ok, cars);
     } catch (error) {
-      return this.res.status(500).json({ message: error });
+      const err = (error as CustomError);
+      this.errorResponse(err.statusCode, err.message);
     }
   }
 
   public async getById() {
     const { id } = this.req.params;
+    
     try {
       const car = await this.service.getCarById(id);
-      return this.res.status(statusCode.ok).json(car);
+      this.sucssesResponse(statusCode.ok, car);
     } catch (error: unknown) {
-      if ((error as CustomError).statusCode === 404) {
-        this.res.status(statusCode.notFound).json({ message: (error as CustomError).message });
-      } else if ((error as CustomError).statusCode === 422) {
-        this.res.status(statusCode.unprocessableEntity).json({ message: (error as CustomError)
-          .message });
+      const err = (error as CustomError);
+      
+      if (err.statusCode === 404) {
+        this.errorResponse(err.statusCode, err.message);
+      } else if (err.statusCode === 422) {
+        this.errorResponse(err.statusCode, err.message);
       } else {
-        this.res.status(500).json({ message: 'Internal server error' });
+        this.errorResponse(err.statusCode, err.message);
       }
     }
   }
 
   public async update() {
-    const { id } = this.req.params;
+    const { id } = this.req.params; 
 
     try {
       const car = await this.service.updateCar(id, this.req.body);
-      this.res.status(statusCode.ok).json(car);
+      this.sucssesResponse(statusCode.ok, car);
     } catch (error: unknown) {
-      if ((error as CustomError).statusCode === 404) {
-        this.res.status(statusCode.notFound).json({ message: (error as CustomError).message });
-      } else if ((error as CustomError).statusCode === 422) {
-        this.res.status(statusCode.unprocessableEntity).json({ message: (error as CustomError)
-          .message });
+      const err = (error as CustomError);
+
+      if (err.statusCode === 404) {
+        this.errorResponse(err.statusCode, err.message);
+      } else if (err.statusCode === 422) {
+        this.errorResponse(err.statusCode, err.message);
       } else {
-        this.res.status(500).json({ message: 'Internal server error' });
+        this.errorResponse(err.statusCode, err.message);
       }
     }
   }
