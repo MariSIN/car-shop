@@ -23,4 +23,11 @@ export default abstract class AbstractODM<T extends IVehicle> {
   public async getById(id: string): Promise<T | null> { 
     return this.model.findById(id);
   }
+
+  public async update(obj: T): Promise <T | null> {
+    const filter = { id: obj.id };
+    const update = { $set: obj };
+    const options = { new: true };
+    return this.model.findOneAndUpdate(filter, update, options);
+  }
 }

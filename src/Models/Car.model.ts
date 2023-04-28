@@ -15,11 +15,4 @@ export default class CarODM extends AbstractODM<ICar> {
     });
     super(schema, 'Car');
   }
-
-  public async updateCar(car: ICar): Promise <ICar | null> {
-    const filter = { id: car.id };
-    const update = { $set: car };
-    const options = { new: true };
-    return this.model.findOneAndUpdate(filter, update, options);
-  }
 }

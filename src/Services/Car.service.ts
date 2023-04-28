@@ -43,7 +43,7 @@ export default class CarService {
     await this.getCarById(id);
 
     const carODM = new CarODM();
-    const update = await carODM.updateCar(car);
+    const update = await carODM.update(car);
     return this.createCarDomain(update);
   }
 }

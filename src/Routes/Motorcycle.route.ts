@@ -12,4 +12,7 @@ motoRoute.get('/motorcycles', (req, res, next) =>
 motoRoute.get('/motorcycles/:id', (req, res, next) => 
   new MotorcycleController(req, res, next).getById());
 
+motoRoute.put('/motorcycles/:id', (req, res, next) => 
+  new MotorcycleController(req, res, next).update());
+
 export default motoRoute;

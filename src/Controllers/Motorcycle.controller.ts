@@ -57,4 +57,23 @@ export default class MotorcycleController {
       }
     }
   }
+
+  public async update() {
+    const { id } = this.req.params;
+
+    try {
+      const moto = await this.service.updateMotorcycle(id, this.req.body);
+      this.responseHandler.sucssesResponse(statusCode.ok, moto);
+    } catch (error: unknown) {
+      const err = (error as CustomError);
+
+      if (err.statusCode === 404) {
+        this.responseHandler.errorResponse(err.statusCode, err.message);
+      } else if (err.statusCode === 422) {
+        this.responseHandler.errorResponse(err.statusCode, err.message);
+      } else {
+        this.responseHandler.errorResponse(err.statusCode, err.message);
+      }
+    }
+  }
 }
