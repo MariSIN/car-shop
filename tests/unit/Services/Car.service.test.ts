@@ -42,7 +42,7 @@ describe('CarService', function () {
 
   describe('GET /cars/:id', function () {
     describe('Testa a função getCarById', function () {
-      describe('Quando o ID', function () {
+      describe('Quando o ID...', function () {
         async function testGetCarById(id: string, expectedErrorMessage: string) {
           sinon.stub(Model, 'findById').resolves(null);
       
@@ -79,7 +79,7 @@ describe('CarService', function () {
 
   describe('PUT /cars/:id', function () {
     describe('Testa a função updateCar', function () {
-      describe('Quando o ID', function () {
+      describe('Quando o ID...', function () {
         async function testUpdateCar(id: string, expectedErrorMessage: string) {
           sinon.stub(Model, 'findByIdAndUpdate').resolves(null);
           try {
@@ -100,7 +100,7 @@ describe('CarService', function () {
           },
         );
 
-        it('estiver correto deve retornar o cadastro atualizado', async function () {
+        it('estiver correto deve retornar o cadastro do carro atualizado', async function () {
           sinon.stub(Model, 'findById').resolves(carOutput);
           sinon.stub(Model, 'findOneAndUpdate')
             .resolves(carOutputUpdate);

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import CustomError from '../Interfaces/CustomError';
-import MotorcycleService from '../Services/Motorcycle';
+import MotorcycleService from '../Services/Motorcycle.service';
 import statusCode from '../helpers/statusCode';
 import ResponseHandler from '../middlewares/responseHandler';
 
