@@ -12,6 +12,25 @@ import {
 describe('MotorcycleService', function () {
   afterEach(sinon.restore);
 
+  describe('createMotorcycleDomain', function () {
+    it(
+      'Deve retornar um novo objeto Motorcycle quando um objeto IMotorcycle válido é passado',
+      function () {
+        const service = new MotorcycleService();
+        const result = service.createMotorcycleDomain(motoInput);
+        expect(result).to.be.instanceOf(Motorcycle);
+        expect(result).to.deep.equal(new Motorcycle(motoInput));
+      },
+    );
+  
+    it('Deve retornar nulo quando um objeto nulo é passado', function () {
+      const service = new MotorcycleService();
+      const result = service
+        .createMotorcycleDomain(null);
+      expect(result).to.be.equal(null);
+    });
+  });
+
   describe('POST /motorcycles', function () {
     describe('Testa a função addMoto', function () {
       it('Cadastrando uma moto com sucesso', async function () {

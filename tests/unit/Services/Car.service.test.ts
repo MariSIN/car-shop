@@ -11,6 +11,25 @@ import {
 
 describe('CarService', function () {
   afterEach(sinon.restore);
+
+  describe('createCarDomain', function () {
+    it(
+      'Deve retornar um novo objeto Car quando um objeto ICar válido é passado',
+      function () {
+        const service = new CarService();
+        const result = service.createCarDomain(carInput);
+        expect(result).to.be.instanceOf(Car);
+        expect(result).to.deep.equal(new Car(carInput));
+      },
+    );
+  
+    it('Deve retornar nulo quando um objeto nulo é passado', function () {
+      const service = new CarService();
+      const result = service
+        .createCarDomain(null);
+      expect(result).to.be.equal(null);
+    });
+  });
   
   describe('POST /cars', function () {
     describe('Testa a função addCar', function () {
