@@ -22,7 +22,7 @@ export default class MotorcycleController {
   public async create() {
     try {
       const newMoto = await this.service.addMoto(this.req.body);
-      this.responseHandler.sucssesResponse(statusCode.created, newMoto);
+      this.responseHandler.successResponse(statusCode.created, newMoto);
     } catch (error) {
       const err = (error as CustomError);
       this.responseHandler.errorResponse(err.statusCode, err.message);
@@ -32,7 +32,7 @@ export default class MotorcycleController {
   public async getAll() {
     try {
       const motorcycles = await this.service.getAllMotorcyles(); 
-      this.responseHandler.sucssesResponse(statusCode.ok, motorcycles);
+      this.responseHandler.successResponse(statusCode.ok, motorcycles);
     } catch (error) {
       const err = (error as CustomError);
       this.responseHandler.errorResponse(err.statusCode, err.message);
@@ -44,17 +44,10 @@ export default class MotorcycleController {
 
     try {
       const motorcycle = await this.service.getMotorcyleById(id);
-      this.responseHandler.sucssesResponse(statusCode.ok, motorcycle);
+      this.responseHandler.successResponse(statusCode.ok, motorcycle);
     } catch (error: unknown) {
       const err = (error as CustomError);
-      
-      if (err.statusCode === 404) {
-        this.responseHandler.errorResponse(err.statusCode, err.message);
-      } else if (err.statusCode === 422) {
-        this.responseHandler.errorResponse(err.statusCode, err.message);
-      } else {
-        this.responseHandler.errorResponse(err.statusCode, err.message);
-      }
+      this.responseHandler.errorResponse(err.statusCode, err.message);
     }
   }
 
@@ -63,17 +56,10 @@ export default class MotorcycleController {
 
     try {
       const moto = await this.service.updateMotorcycle(id, this.req.body);
-      this.responseHandler.sucssesResponse(statusCode.ok, moto);
+      this.responseHandler.successResponse(statusCode.ok, moto);
     } catch (error: unknown) {
       const err = (error as CustomError);
-
-      if (err.statusCode === 404) {
-        this.responseHandler.errorResponse(err.statusCode, err.message);
-      } else if (err.statusCode === 422) {
-        this.responseHandler.errorResponse(err.statusCode, err.message);
-      } else {
-        this.responseHandler.errorResponse(err.statusCode, err.message);
-      }
+      this.responseHandler.errorResponse(err.statusCode, err.message);
     }
   }
 }

@@ -30,4 +30,8 @@ export default abstract class AbstractODM<T extends IVehicle> {
     const options = { new: true };
     return this.model.findOneAndUpdate(filter, update, options);
   }
+
+  public async deleteVehicle(id: string): Promise<T | null> {
+    return this.model.findByIdAndDelete(id);
+  } 
 }
