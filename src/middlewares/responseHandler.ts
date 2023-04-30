@@ -6,7 +6,7 @@ export default class ResponseHandler {
   public errorResponse: IErrorResponse = (stt, message) =>
     this.res.status(stt).json({ message });
 
-  public sucssesResponse: ISuccessResponse = (stt, obj) =>
+  public successResponse: ISuccessResponse = (stt, obj) =>
     this.res.status(stt).json(obj);
 
   constructor(private res: Response) {}
