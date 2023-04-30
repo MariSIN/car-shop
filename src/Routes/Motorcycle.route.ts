@@ -4,16 +4,22 @@ import idErrors from '../middlewares/idError';
 
 const motoRoute = Router();
 
-motoRoute.post('/motorcycles', (req, res, next) => 
+const route = '/motorcycles';
+const routeId = '/motorcycles/:id';
+
+motoRoute.post(route, (req, res, next) => 
   new MotorcycleController(req, res, next).create());
 
-motoRoute.get('/motorcycles', (req, res, next) => 
+motoRoute.get(route, (req, res, next) => 
   new MotorcycleController(req, res, next).getAll());
   
-motoRoute.get('/motorcycles/:id', idErrors(async (req, res, next) =>
+motoRoute.get(routeId, idErrors(async (req, res, next) =>
   new MotorcycleController(req, res, next).getById()));
 
-motoRoute.put('/motorcycles/:id', idErrors(async (req, res, next) =>
+motoRoute.put(routeId, idErrors(async (req, res, next) =>
   new MotorcycleController(req, res, next).update()));
+
+motoRoute.delete(routeId, idErrors(async (req, res, next) =>
+  new MotorcycleController(req, res, next).deleteMotorcycle()));
 
 export default motoRoute;

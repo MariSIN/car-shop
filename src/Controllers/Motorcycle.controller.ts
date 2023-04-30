@@ -62,4 +62,16 @@ export default class MotorcycleController {
       this.responseHandler.errorResponse(err.statusCode, err.message);
     }
   }
+
+  public async deleteMotorcycle() {
+    const { id } = this.req.params;
+
+    try {
+      const moto = await this.service.deleteMotorcycle(id);
+      this.responseHandler.successResponse(statusCode.ok, moto);
+    } catch (error: unknown) {
+      const err = (error as CustomError);
+      this.responseHandler.errorResponse(err.statusCode, err.message);
+    }
+  }
 }

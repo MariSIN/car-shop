@@ -4,17 +4,20 @@ import idErros from '../middlewares/idError';
 
 const carRoute = Router();
 
-carRoute.post('/cars', (req, res, next) => new CarController(req, res, next).create());
+const route = '/cars/';
+const routeId = '/cars/:id';
 
-carRoute.get('/cars', (req, res, next) => new CarController(req, res, next).getAll());
+carRoute.post(route, (req, res, next) => new CarController(req, res, next).create());
 
-carRoute.get('/cars/:id', idErros(async (req, res, next) =>
+carRoute.get(route, (req, res, next) => new CarController(req, res, next).getAll());
+
+carRoute.get(routeId, idErros(async (req, res, next) =>
   new CarController(req, res, next).getById()));
 
-carRoute.put('/cars/:id', idErros(async (req, res, next) =>
+carRoute.put(routeId, idErros(async (req, res, next) =>
   new CarController(req, res, next).update()));
 
-carRoute.delete('/cars/:id', idErros(async (req, res, next) =>
+carRoute.delete(routeId, idErros(async (req, res, next) =>
   new CarController(req, res, next).deleteCar()));
 
 export default carRoute;
