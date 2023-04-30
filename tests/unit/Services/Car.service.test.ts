@@ -11,6 +11,13 @@ import {
 
 describe('CarService', function () {
   afterEach(sinon.restore);
+  const describeId = 'Quando o Id...';
+  const error404 = 'não existir retorna { message: "Car not found" }';
+  const error422 = 'estiver com o formato incorreto retorna { message: "Invalid mongo id" }';
+  const notFoundId = '644ab6488595820219e25810';
+  const invalidId = 'asdq12364';
+  const messageError404 = 'Car not found';
+  const messageError422 = 'Invalid mongo id';
 
   describe('createCarDomain', function () {
     it(
@@ -61,7 +68,7 @@ describe('CarService', function () {
 
   describe('GET /cars/:id', function () {
     describe('Testa a função getCarById', function () {
-      describe('Quando o ID...', function () {
+      describe(describeId, function () {
         async function testGetCarById(id: string, expectedErrorMessage: string) {
           sinon.stub(Model, 'findById').resolves(null);
       
@@ -73,16 +80,13 @@ describe('CarService', function () {
           }
         }
 
-        it('não existir retorna { message: "Car not found" }', async function () {
-          testGetCarById('644ab6488595820219e25810', 'Car not found');
+        it(error404, async function () {
+          testGetCarById(notFoundId, messageError404);
         });
       
-        it(
-          'estiver com o formato incorreto retorna { message: "Invalid mongo id" }',
-          async function () {
-            testGetCarById('asdq12364', 'Invalid mongo id');
-          },
-        );
+        it(error422, async function () {
+          testGetCarById(invalidId, messageError422);
+        });
 
         it('existir e estiver correto retorna o carro', async function () {
           const carsOutput = carList.map((car) => new Car(car));
@@ -98,9 +102,9 @@ describe('CarService', function () {
 
   describe('PUT /cars/:id', function () {
     describe('Testa a função updateCar', function () {
-      describe('Quando o ID...', function () {
+      describe(describeId, function () {
         async function testUpdateCar(id: string, expectedErrorMessage: string) {
-          sinon.stub(Model, 'findByIdAndUpdate').resolves(null);
+          sinon.stub(Model, 'findOneAndUpdate').resolves(null);
           try {
             const service = new CarService();
             await service.updateCar(id, carInput);
@@ -108,16 +112,13 @@ describe('CarService', function () {
             expect((error as Error).message).to.be.equal(expectedErrorMessage);
           }
         }
-        it('não existir retorna { message: "Car not found" }', async function () {
-          testUpdateCar('644ab6488595820219e25810', 'Car not found');
+        it(error404, async function () {
+          testUpdateCar(notFoundId, messageError404);
         });
         
-        it(
-          'estiver com o formato incorreto retorna { message: "Invalid mongo id" }',
-          async function () {
-            testUpdateCar('asdq12364', 'Invalid mongo id');
-          },
-        );
+        it(error422, async function () {
+          testUpdateCar(invalidId, messageError422);
+        });
 
         it('estiver correto deve retornar o cadastro do carro atualizado', async function () {
           sinon.stub(Model, 'findById').resolves(carOutput);
@@ -128,6 +129,40 @@ describe('CarService', function () {
           const result = await service.updateCar(idParams, carInputUpdate);
         
           expect(result).to.be.deep.equal(carOutputUpdate);
+        });
+      });
+    });
+  });
+
+  describe('DELETE /cars/:id', function () {
+    describe('Testa a função deleteCar', function () {
+      describe(describeId, function () {
+        async function testDeleteCar(id: string, expectedErrorMessage: string) {
+          sinon.stub(Model, 'findByIdAndDelete').resolves(null);
+          try {
+            const service = new CarService();
+            await service.updateCar(id, carInput);
+          } catch (error) {
+            expect((error as Error).message).to.be.equal(expectedErrorMessage);
+          }
+        }
+        it(error404, async function () {
+          testDeleteCar(notFoundId, messageError404);
+        });
+        
+        it(error422, async function () {
+          testDeleteCar(invalidId, messageError422);
+        });
+
+        it('estiver correto deve retornar o carro excluído', async function () {
+          sinon.stub(Model, 'findById').resolves(carOutput);
+          sinon.stub(Model, 'findByIdAndDelete')
+            .resolves(carOutput);
+        
+          const service = new CarService();
+          const result = await service.deleteCar(idParams);
+        
+          expect(result).to.be.deep.equal(carOutput);
         });
       });
     });

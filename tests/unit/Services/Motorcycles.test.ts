@@ -11,6 +11,13 @@ import {
 
 describe('MotorcycleService', function () {
   afterEach(sinon.restore);
+  const describeId = 'Quando o Id...';
+  const error404 = 'não existir retorna { message: "Car not found" }';
+  const error422 = 'estiver com o formato incorreto retorna { message: "Invalid mongo id" }';
+  const notFoundId = '644ab6488595820219e25810';
+  const invalidId = 'asdq12364';
+  const messageError404 = 'Car not found';
+  const messageError422 = 'Invalid mongo id';
 
   describe('createMotorcycleDomain', function () {
     it(
@@ -58,7 +65,7 @@ describe('MotorcycleService', function () {
   });
   describe('GET /motorcycles/:id', function () {
     describe('Testa a função getMotorcyleById', function () {
-      describe('Quando o ID...', function () {
+      describe(describeId, function () {
         async function testGetMotorcyleById(id: string, expectedErrorMessage: string) {
           sinon.stub(Model, 'findById').resolves(null);
       
@@ -69,16 +76,13 @@ describe('MotorcycleService', function () {
             expect((error as Error).message).to.be.equal(expectedErrorMessage);
           }
         }
-        it('não exixtir retorna { message: "Motorcycle not found" }', async function () {
-          testGetMotorcyleById('65499232f75a1d20be2cd47d', 'Motorcycle not found');
+        it(error404, async function () {
+          testGetMotorcyleById(notFoundId, messageError404);
         });
 
-        it(
-          'estiver com o formato incorreto retorna { message: "Invalid mongo id" }',
-          async function () {
-            testGetMotorcyleById('asdq12364', 'Invalid mongo id');
-          },
-        );
+        it(error422, async function () {
+          testGetMotorcyleById(invalidId, messageError422);
+        });
 
         it('existir e estiver correto retorna a motocileta', async function () {
           const motors = motorcyclesList.map((moto) => new Motorcycle(moto));
@@ -94,10 +98,10 @@ describe('MotorcycleService', function () {
   });
 
   describe('PUT /cars/:id', function () {
-    describe('Testa a função updateCar', function () {
-      describe('Quando o ID...', function () {
+    describe('Testa a função updateMotorcycle', function () {
+      describe(describeId, function () {
         async function testUpdateMotorcycle(id: string, expectedErrorMessage: string) {
-          sinon.stub(Model, 'findByIdAndUpdate').resolves(null);
+          sinon.stub(Model, 'findOneAndUpdate').resolves(null);
           try {
             const service = new MotorcycleService();
             await service.updateMotorcycle(id, motoInput);
@@ -105,16 +109,13 @@ describe('MotorcycleService', function () {
             expect((error as Error).message).to.be.equal(expectedErrorMessage);
           }
         }
-        it('não existir retorna { message: "Motorcycle not found" }', async function () {
-          testUpdateMotorcycle('644ab6488595820219e25810', 'Motorcycle not found');
+        it(error404, async function () {
+          testUpdateMotorcycle(notFoundId, messageError404);
         });
         
-        it(
-          'estiver com o formato incorreto retorna { message: "Invalid mongo id" }',
-          async function () {
-            testUpdateMotorcycle('asdq12364', 'Invalid mongo id');
-          },
-        );
+        it(error422, async function () {
+          testUpdateMotorcycle(invalidId, messageError422);
+        });
 
         it('estiver correto deve retornar o cadastro da motocicleta atualizado', async function () {
           sinon.stub(Model, 'findById').resolves(motoOutput);
@@ -125,6 +126,40 @@ describe('MotorcycleService', function () {
           const result = await service.updateMotorcycle(idParams, motoInputUpdate);
         
           expect(result).to.be.deep.equal(motoOutputUpdate);
+        });
+      });
+    });
+  });
+
+  describe('DELETE /cars/:id', function () {
+    describe('Testa a função deleteMotorcycle', function () {
+      describe(describeId, function () {
+        async function testDeleteMotorcycle(id: string, expectedErrorMessage: string) {
+          sinon.stub(Model, 'findByIdAndDelete').resolves(null);
+          try {
+            const service = new MotorcycleService();
+            await service.deleteMotorcycle(id);
+          } catch (error) {
+            expect((error as Error).message).to.be.equal(expectedErrorMessage);
+          }
+        }
+        it(error404, async function () {
+          testDeleteMotorcycle(notFoundId, messageError404);
+        });
+        
+        it(error422, async function () {
+          testDeleteMotorcycle(invalidId, messageError422);
+        });
+
+        it('estiver correto deve retornar a motocicleta deletada', async function () {
+          sinon.stub(Model, 'findById').resolves(motoOutput);
+          sinon.stub(Model, 'findByIdAndDelete')
+            .resolves(motoOutput);
+        
+          const service = new MotorcycleService();
+          const result = await service.deleteMotorcycle(idParams);
+        
+          expect(result).to.be.deep.equal(motoOutput);
         });
       });
     });

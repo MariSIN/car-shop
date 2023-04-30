@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import CarController from '../Controllers/Car.controller';
-import idErros from '../middlewares/idError';
+import idErrors from '../middlewares/idError';
 
 const carRoute = Router();
 
@@ -11,13 +11,13 @@ carRoute.post(route, (req, res, next) => new CarController(req, res, next).creat
 
 carRoute.get(route, (req, res, next) => new CarController(req, res, next).getAll());
 
-carRoute.get(routeId, idErros(async (req, res, next) =>
+carRoute.get(routeId, idErrors(async (req, res, next) =>
   new CarController(req, res, next).getById()));
 
-carRoute.put(routeId, idErros(async (req, res, next) =>
+carRoute.put(routeId, idErrors(async (req, res, next) =>
   new CarController(req, res, next).update()));
 
-carRoute.delete(routeId, idErros(async (req, res, next) =>
+carRoute.delete(routeId, idErrors(async (req, res, next) =>
   new CarController(req, res, next).deleteCar()));
 
 export default carRoute;
