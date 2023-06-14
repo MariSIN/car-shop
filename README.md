@@ -78,6 +78,7 @@ Para rodar os testes, rode o seguinte comando
 
 ### 03 - Escreva testes para cobrir 30% da camada de Service
 
+---
 
 ### 04 - Crie a rota /cars/:id onde seja possível atualizar um carro por ID
 
@@ -130,6 +131,7 @@ Para rodar os testes, rode o seguinte comando
 
 ### 06 - Escreva testes para cobrir 60% da camada de Service
 
+---
 
 ### 07 - Crie a rota /motorcycles onde seja possível listar motos
 
@@ -159,6 +161,7 @@ Para rodar os testes, rode o seguinte comando
 
 ### 09 - Escreva testes para cobrir 80% da camada de Service
 
+---
 
 ### 10 - Crie a rota /cars/:id onde seja possível excluir um carro por ID
 
